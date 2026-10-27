@@ -19,7 +19,7 @@ def load_db
   seed = JSON.parse(File.read(SEED_PATH))
   db = {
     'topics' => seed['topics'], 'courses' => seed['courses'], 'tools' => seed['tools'],
-    'resources' => seed['resources'], 'posts' => seed['posts'],
+    'resources' => seed['resources'], 'posts' => seed['posts'], 'videos' => seed['videos'] || [],
     'users' => [], 'sessions' => {}
   }
   save_db(db)
@@ -34,6 +34,8 @@ def save_db(db)
 end
 
 DB = load_db
+# Databases created before the videos section existed start with the seed videos.
+DB['videos'] ||= (JSON.parse(File.read(SEED_PATH))['videos'] || [])
 
 # ---------- helpers ----------
 class ApiError < StandardError
@@ -137,6 +139,13 @@ def build_item(kind, b)
       'illus' => b['illus'].to_s.empty? ? 'measure' : b['illus'], 'blurb' => require_str(b, 'blurb', 'Short description'),
       'resource' => b['resource'].to_s, 'tool' => b['tool'].to_s, 'lessons' => lessons
     }
+  when 'videos'
+    url = url_or_blank(b['url'], 'Video link')
+    raise ApiError.new(422, 'Video link is required') if url.empty?
+    {
+      'title' => require_str(b, 'title', 'Title'), 'url' => url, 'topic' => topic!(b['topic']),
+      'tool' => b['tool'].to_s.strip, 'blurb' => b['blurb'].to_s.strip
+    }
   when 'posts'
     {
       'title' => require_str(b, 'title', 'Title'), 'body' => require_str(b, 'body', 'Details'), 'topic' => topic!(b['topic']),
@@ -204,7 +213,7 @@ class Api < WEBrick::HTTPServlet::AbstractServlet
   # Which roles may manage each area. Members can only post and reply; viewers can only read.
   ROLES = %w[admin editor moderator member viewer].freeze
   AREAS = {
-    'content' => %w[admin editor],      # tools, courses (with videos), resources
+    'content' => %w[admin editor],      # tools, courses (with videos), tool videos, resources
     'community' => %w[admin moderator], # community questions and replies
     'members' => %w[admin]              # member list and roles
   }.freeze
@@ -259,7 +268,7 @@ class Api < WEBrick::HTTPServlet::AbstractServlet
     rid = parts[3]
     case "#{method} #{parts.join('/')}"
     when 'GET content'
-      DB.slice('topics', 'courses', 'tools', 'resources', 'posts').merge('me' => public_user(current_user(req)))
+      DB.slice('topics', 'courses', 'tools', 'resources', 'posts', 'videos').merge('me' => public_user(current_user(req)))
 
     when 'GET auth/me'
       { 'me' => public_user(current_user(req)) }
@@ -319,7 +328,7 @@ class Api < WEBrick::HTTPServlet::AbstractServlet
       post
 
     # Admin: create / update / delete content.
-    when %r{\APOST admin/(courses|tools|resources|posts)\z}
+    when %r{\APOST admin/(courses|tools|resources|posts|videos)\z}
       user = allowed!(req, area_for(kind))
       list = DB[kind] || raise(ApiError.new(404, 'Unknown collection'))
       fields = build_item(kind, b)
@@ -328,7 +337,7 @@ class Api < WEBrick::HTTPServlet::AbstractServlet
       save_db(DB)
       item
 
-    when %r{\APUT admin/(courses|tools|resources|posts)/[\w-]+\z}
+    when %r{\APUT admin/(courses|tools|resources|posts|videos)/[\w-]+\z}
       allowed!(req, area_for(kind))
       list = DB[kind] || raise(ApiError.new(404, 'Unknown collection'))
       item = list.find { |x| x['id'] == id } || raise(ApiError.new(404, 'Not found'))
@@ -337,7 +346,7 @@ class Api < WEBrick::HTTPServlet::AbstractServlet
       save_db(DB)
       item
 
-    when %r{\ADELETE admin/(courses|tools|resources|posts)/[\w-]+\z}
+    when %r{\ADELETE admin/(courses|tools|resources|posts|videos)/[\w-]+\z}
       allowed!(req, area_for(kind))
       list = DB[kind] || raise(ApiError.new(404, 'Unknown collection'))
       raise ApiError.new(404, 'Not found') unless list.reject! { |x| x['id'] == id }

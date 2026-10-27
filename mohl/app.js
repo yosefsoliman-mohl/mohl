@@ -1,6 +1,6 @@
 (async () => {
   // Content and the signed-in user come from the server; saves and progress stay in this browser.
-  let topics = [], courses = [], tools = [], resources = [], posts = [], me = null;
+  let topics = [], courses = [], tools = [], resources = [], posts = [], videos = [], me = null;
   const defaultSaved = { course: ['plan-measurement', 'app-funnel'], tool: ['appsflyer', 'firebase'], resource: ['event-tracking-plan', 'utm-naming'], lesson: [], post: [] };
 
   // With no server behind the page (e.g. GitHub Pages), everything runs in preview mode.
@@ -30,6 +30,7 @@
   async function loadContent() {
     const d = await api('content');
     ({ topics, courses, tools, resources, posts, me } = d);
+    videos = d.videos || [];
   }
   function previewBanner() {
     if (!preview || $('#preview-banner')) return;
@@ -350,11 +351,23 @@
         ${searchBox('learn-q', 'What would you like to learn?', s.q, 'grow')}
         ${select('learn-level', [['all', 'All levels'], ['Beginner', 'Beginner'], ['Intermediate', 'Intermediate']], s.level)}
       </div>
-      <div class="chips">${chips([['all', 'All'], ...topics.map((t) => [t.id, t.short])], s.topic, 'learn-topic')}</div>
+      <div class="chips">${chips([['all', 'All'], ...topics.map((t) => [t.id, t.short]), ['videos', 'Tools videos']], s.topic, 'learn-topic')}</div>
       <div class="grid-3" data-list></div>`;
+  };
+  // The "Tools videos" chip lists tool videos instead of courses; staff add them in Admin → Tool videos.
+  const toolVideos = (q) => {
+    const list = videos.filter((v) => match(q, v.title, v.tool, v.blurb, topic(v.topic)?.name));
+    return list.length ? list.map((v) => `
+      <article class="card video-card">
+        ${videoEmbed(v.url, v.title)}
+        <div class="kicker">${esc(v.tool || topic(v.topic)?.name || '')}</div>
+        <h3>${esc(v.title)}</h3>
+        ${v.blurb ? `<p>${esc(v.blurb)}</p>` : ''}
+      </article>`).join('') : empty(videos.length ? 'No videos match your search.' : 'No tool videos yet.');
   };
   pages.learn.list = () => {
     const s = ui.learn;
+    if (s.topic === 'videos') return toolVideos(s.q);
     const list = courses.filter((c) => (s.topic === 'all' || c.topic === s.topic) && (s.level === 'all' || c.level === s.level) && match(s.q, c.title, c.blurb, topic(c.topic).name));
     const cards = list.map((c) => `
       <article class="card course-v">
@@ -833,6 +846,15 @@
         ['type', 'Type', 'select', { options: ['Template', 'Checklist', 'Worksheet', 'Guide'].map((v) => [v, v]) }],
         ['format', 'Format', 'select', { options: ['XLSX', 'PDF', 'DOCX'].map((v) => [v, v]) }],
         ['blurb', 'Short description', 'text', { required: true }], ['illus', 'Illustration', 'select', { options: ILLUS_OPTS }],
+      ],
+    },
+    videos: {
+      label: 'Tool videos', single: 'video', icon: 'video', title: (x) => x.title,
+      sub: (x) => [x.tool, topic(x.topic)?.name].filter(Boolean).join(' · '), list: () => videos,
+      fields: () => [
+        ['title', 'Title', 'text', { required: true }], ['url', 'Video link (YouTube, Vimeo or .mp4)', 'url', { required: true }],
+        ['tool', 'Tool name (e.g. MoEngage)', 'text'], ['topic', 'Topic', 'select', { options: topicOpts() }],
+        ['blurb', 'Short description', 'textarea'],
       ],
     },
     posts: {

@@ -857,7 +857,9 @@
    "kind": "Question",
    "title": "How should we name UTMs across channels?",
    "body": "We want consistent source, medium and campaign values across our team.",
-   "replies": []
+   "replies": [
+
+   ]
   },
   {
    "id": "p4",
@@ -886,7 +888,9 @@
    "kind": "Shared learning",
    "title": "A pre-permission screen doubled our push opt-in",
    "body": "We explained the value before the system prompt. Opt-in went from 31% to 64%.",
-   "replies": []
+   "replies": [
+
+   ]
   },
   {
    "id": "p6",
@@ -898,7 +902,9 @@
    "kind": "Shared learning",
    "title": "Our event naming checklist",
    "body": "snake_case, verb_object, no PII, and every event has an owner. Saved us hours of clean-up.",
-   "replies": []
+   "replies": [
+
+   ]
   }
  ],
  "defaultSaved": {
@@ -914,7 +920,21 @@
    "event-tracking-plan",
    "utm-naming"
   ],
-  "lesson": [],
-  "post": []
- }
+  "lesson": [
+
+  ],
+  "post": [
+
+  ]
+ },
+ "videos": [
+  {
+   "id": "moengage-agentic-ai",
+   "title": "What Agentic AI Needs to Actually Work: Lessons from Estée Lauder, Morgan Stanley, and Renuity",
+   "url": "https://www.youtube.com/watch?v=dMnyAnFpp3A",
+   "topic": "engagement",
+   "tool": "MoEngage",
+   "blurb": ""
+  }
+ ]
 }

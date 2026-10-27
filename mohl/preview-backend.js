@@ -34,9 +34,11 @@ window.MOHL_PREVIEW = (() => {
     try { db = JSON.parse(read(DB_KEY)); } catch {}
     if (!db) {
       const seed = await (await fetch('seed.json')).json();
-      db = { topics: seed.topics, courses: seed.courses, tools: seed.tools, resources: seed.resources, posts: seed.posts, users: [] };
+      db = { topics: seed.topics, courses: seed.courses, tools: seed.tools, resources: seed.resources, posts: seed.posts, videos: seed.videos || [], users: [] };
       save();
     }
+    // Preview data saved before the videos section existed starts with the seed videos.
+    if (!db.videos) { db.videos = (await (await fetch('seed.json')).json()).videos || []; save(); }
   }
 
   const me = () => db.users.find((u) => u.id === read(SESSION_KEY));
@@ -81,6 +83,11 @@ window.MOHL_PREVIEW = (() => {
         illus: b.illus || 'measure', blurb: req(b, 'blurb', 'Short description'), resource: String(b.resource || ''), tool: String(b.tool || ''), lessons,
       };
     }
+    if (kind === 'videos') {
+      const link = url(b.url, 'Video link');
+      if (!link) fail(422, 'Video link is required');
+      return { title: req(b, 'title', 'Title'), url: link, topic: topic(b.topic), tool: String(b.tool || '').trim(), blurb: String(b.blurb || '').trim() };
+    }
     if (kind === 'posts') return { title: req(b, 'title', 'Title'), body: req(b, 'body', 'Details'), topic: topic(b.topic), kind: b.kind === 'Shared learning' ? 'Shared learning' : 'Question' };
     fail(404, 'Unknown collection');
   }
@@ -104,9 +111,9 @@ window.MOHL_PREVIEW = (() => {
     const b = parts[0] === 'auth' || (parts[0] === 'admin' && parts[1] === 'users') ? rawBody : clean(rawBody);
     const key = `${method} ${parts.join('/')}`;
     const [, kind, id] = parts;
-    const CONTENT = /^(courses|tools|resources|posts)$/;
+    const CONTENT = /^(courses|tools|resources|posts|videos)$/;
 
-    if (key === 'GET content') return { topics: db.topics, courses: db.courses, tools: db.tools, resources: db.resources, posts: db.posts, me: publicUser(me()), preview: true };
+    if (key === 'GET content') return { topics: db.topics, courses: db.courses, tools: db.tools, resources: db.resources, posts: db.posts, videos: db.videos, me: publicUser(me()), preview: true };
     if (key === 'GET auth/me') return { me: publicUser(me()) };
     if (key === 'POST auth/signup') {
       const u = await createUser(b, db.users.some((x) => x.role === 'admin') ? 'member' : 'admin');
