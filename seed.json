@@ -929,12 +929,20 @@
  },
  "videos": [
   {
+   "id": "moengage-indusind-bank",
+   "title": "IndusInd Bank",
+   "url": "https://www.youtube.com/watch?v=gASnWf4gtx0",
+   "topic": "engagement",
+   "tool": "MoEngage",
+   "blurb": "From 10 Days to Within 10 Minutes: IndusInd Bank Turbocharges Campaign Velocity with MoEngage"
+  },
+  {
    "id": "moengage-agentic-ai",
-   "title": "What Agentic AI Needs to Actually Work: Lessons from Estée Lauder, Morgan Stanley, and Renuity",
+   "title": "Agentic marketing",
    "url": "https://www.youtube.com/watch?v=dMnyAnFpp3A",
    "topic": "engagement",
    "tool": "MoEngage",
-   "blurb": ""
+   "blurb": "What Agentic AI Needs to Actually Work: Lessons from Estée Lauder, Morgan Stanley, and Renuity"
   }
  ]
 }
