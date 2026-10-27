@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>MoHL — Mobile Growth, All in One</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar" id="sidebar">
+      <a class="brand" href="#/home">
+        <svg class="brand-mark" viewBox="0 0 48 40" aria-hidden="true">
+          <defs><linearGradient id="bm" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#E9893F"/><stop offset="1" stop-color="#A4441A"/></linearGradient></defs>
+          <path d="M4 36 C6 20 9 6 14 6 C19 6 18 24 24 24 C30 24 29 6 34 6 C39 6 42 20 44 36" fill="none" stroke="url(#bm)" stroke-width="7" stroke-linecap="round"/>
+        </svg>
+        <span><strong>MoHL</strong><small>Mobile Growth, All in One</small></span>
+      </a>
+      <nav class="nav" id="nav-main"></nav>
+      <nav class="nav nav-bottom" id="nav-bottom"></nav>
+    </aside>
+    <div class="scrim" id="scrim"></div>
+    <div class="main">
+      <header class="topbar">
+        <button class="icon-btn menu-btn" id="menu-btn" aria-label="Open menu"></button>
+        <button class="global-search" id="global-search">
+          <span class="gs-icon"></span>
+          <span class="gs-text">Search courses, tools and resources…</span>
+          <kbd>⌘K</kbd>
+        </button>
+        <div class="topbar-right"></div>
+      </header>
+      <main class="page" id="page" tabindex="-1"></main>
+    </div>
+  </div>
+  <div class="modal-root" id="modal-root" hidden></div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="app.js"></script>
+</body>
+</html>

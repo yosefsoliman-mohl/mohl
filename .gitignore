@@ -1,0 +1,6 @@
+# Local database: accounts, password hashes and login sessions. Never commit.
+data/
+
+# Local editor / tool settings
+.claude/
+.DS_Store

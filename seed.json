@@ -1,0 +1,920 @@
+{
+ "topics": [
+  {
+   "id": "measurement",
+   "name": "Measurement & Attribution",
+   "short": "Measurement",
+   "community": "Attribution",
+   "icon": "chart"
+  },
+  {
+   "id": "analytics",
+   "name": "App Analytics & Firebase",
+   "short": "Analytics",
+   "community": "App Analytics",
+   "icon": "chart"
+  },
+  {
+   "id": "engagement",
+   "name": "Engagement & Retargeting",
+   "short": "Engagement",
+   "community": "Engagement",
+   "icon": "users"
+  },
+  {
+   "id": "push",
+   "name": "Push Notifications",
+   "short": "Push",
+   "community": "Push",
+   "icon": "bell"
+  },
+  {
+   "id": "ads",
+   "name": "App Install Ads",
+   "short": "Ads",
+   "community": "App Ads",
+   "icon": "megaphone"
+  },
+  {
+   "id": "deeplinks",
+   "name": "Deep Links & Deep-link Ads",
+   "short": "Deep Links",
+   "community": "Deep Links",
+   "icon": "link"
+  },
+  {
+   "id": "utm",
+   "name": "UTM Building & Governance",
+   "short": "UTMs",
+   "community": "UTMs",
+   "icon": "file"
+  }
+ ],
+ "courses": [
+  {
+   "id": "plan-measurement",
+   "topic": "measurement",
+   "level": "Beginner",
+   "illus": "measure",
+   "title": "Plan Your App Measurement",
+   "blurb": "Choose the events that matter.",
+   "homeBlurb": "Decide what to track and why.",
+   "resource": "event-tracking-plan",
+   "tool": "firebase",
+   "lessons": [
+    {
+     "title": "Map the user journey",
+     "heading": "Start with the path your users take.",
+     "intro": "Before naming any events, sketch the key steps a new user moves through — from install to the moment they get real value.",
+     "example": {
+      "label": "Shopping app",
+      "title": "Install → Browse → Add to cart → Purchase",
+      "text": "Four steps describe the core journey. Each one is a candidate for measurement."
+     },
+     "steps": [
+      "The first screen a new user sees",
+      "The steps between install and value",
+      "Where users most often drop off"
+     ],
+     "yourTurn": "List the 4–6 steps of your core journey in the event tracking plan."
+    },
+    {
+     "title": "Define your activation event",
+     "heading": "Choose the action that represents value.",
+     "intro": "An activation event should reflect a meaningful first experience in your app. Choose it around the value your app delivers.",
+     "example": {
+      "label": "Shopping app",
+      "title": "First purchase completed",
+      "text": "For this example, the first completed purchase is the activation event."
+     },
+     "steps": [
+      "The action the user completes",
+      "The conditions that make it count",
+      "The event name you will track"
+     ],
+     "yourTurn": "Use the event tracking plan to define one activation event for your app."
+    },
+    {
+     "title": "Create an event plan",
+     "heading": "Turn your journey into a tracking plan.",
+     "intro": "A good event plan lists each event, when it fires, and the parameters that explain it. Keep names consistent and readable.",
+     "example": {
+      "label": "Shopping app",
+      "title": "add_to_cart · item_id, price, currency",
+      "text": "One event, three parameters — enough to answer “what did people add, and how much was it worth?”"
+     },
+     "steps": [
+      "The event name in snake_case",
+      "The trigger that fires it",
+      "The parameters you need to analyse it"
+     ],
+     "yourTurn": "Add at least five events with triggers and parameters to your plan."
+    },
+    {
+     "title": "Check event quality",
+     "heading": "Make sure your data can be trusted.",
+     "intro": "Before you rely on a report, check that events fire once, at the right moment, with the right values.",
+     "example": {
+      "label": "Shopping app",
+      "title": "purchase fired twice per order",
+      "text": "Duplicate events inflate revenue. A quick debug session catches this before launch."
+     },
+     "steps": [
+      "Events fire exactly once",
+      "Parameters carry the expected values",
+      "Naming matches your plan"
+     ],
+     "yourTurn": "Run through your app in debug mode and tick off each event in the plan."
+    }
+   ]
+  },
+  {
+   "id": "app-funnel",
+   "topic": "analytics",
+   "level": "Beginner",
+   "illus": "funnel",
+   "title": "Understand Your App Funnel",
+   "blurb": "Learn how Firebase Analytics uses events.",
+   "homeBlurb": "Turn app events into useful questions.",
+   "resource": "firebase-event-map",
+   "tool": "firebase",
+   "lessons": [
+    {
+     "title": "Events in Firebase",
+     "heading": "Everything in Firebase starts with an event.",
+     "intro": "Firebase records what users do as events with parameters. Automatic events cover the basics; custom events cover your product.",
+     "example": {
+      "label": "Fitness app",
+      "title": "workout_started",
+      "text": "A custom event that tells you how many users actually begin a workout."
+     },
+     "steps": [
+      "Which events are collected automatically",
+      "Which custom events you need",
+      "Which parameters describe them"
+     ],
+     "yourTurn": "Map your planned events into the Firebase event map."
+    },
+    {
+     "title": "Build a funnel",
+     "heading": "Line up the steps that lead to value.",
+     "intro": "A funnel shows how many users move from one step to the next, and where they stop.",
+     "example": {
+      "label": "Fitness app",
+      "title": "Open → Start workout → Finish workout",
+      "text": "A three-step funnel shows the biggest drop is between start and finish."
+     },
+     "steps": [
+      "The first step of the funnel",
+      "The step that represents value",
+      "The steps in between"
+     ],
+     "yourTurn": "Sketch a three-step funnel for your app."
+    },
+    {
+     "title": "Use audiences",
+     "heading": "Group users by what they did.",
+     "intro": "Audiences let you segment users by behaviour and use those groups in reports and campaigns.",
+     "example": {
+      "label": "Fitness app",
+      "title": "Started but never finished",
+      "text": "An audience you can re-engage with a helpful reminder."
+     },
+     "steps": [
+      "The behaviour that defines the group",
+      "The time window",
+      "What you will do with the audience"
+     ],
+     "yourTurn": "Define one audience you would act on this month."
+    },
+    {
+     "title": "Ask better questions",
+     "heading": "Turn reports into decisions.",
+     "intro": "The best analytics work starts from a question, not a dashboard.",
+     "example": {
+      "label": "Fitness app",
+      "title": "Why do users stop after day 3?",
+      "text": "A specific question points you to the right report."
+     },
+     "steps": [
+      "The question you want answered",
+      "The report that answers it",
+      "The decision it informs"
+     ],
+     "yourTurn": "Write down three questions your funnel should answer."
+    }
+   ]
+  },
+  {
+   "id": "reengagement",
+   "topic": "engagement",
+   "level": "Intermediate",
+   "illus": "reengage",
+   "title": "Plan a Re-engagement Journey",
+   "blurb": "Know who to bring back and why.",
+   "resource": "reengagement-planner",
+   "tool": "braze",
+   "lessons": [
+    {
+     "title": "Pick the audience",
+     "heading": "Know who you want to bring back.",
+     "intro": "Re-engagement works best when it targets a clear group with a clear reason to return.",
+     "example": {
+      "label": "News app",
+      "title": "Readers inactive for 14 days",
+      "text": "A specific window keeps the message relevant."
+     },
+     "steps": [
+      "Who the users are",
+      "How long they have been away",
+      "What they did before leaving"
+     ],
+     "yourTurn": "Define one lapsed audience in the journey planner."
+    },
+    {
+     "title": "Choose the channel",
+     "heading": "Meet users where they are.",
+     "intro": "Push, email and in-app messages each fit a different moment.",
+     "example": {
+      "label": "News app",
+      "title": "Email for weekly digest",
+      "text": "Inactive users may have disabled push; email can still reach them."
+     },
+     "steps": [
+      "The channels you have permission for",
+      "The channel that fits the message",
+      "A fallback channel"
+     ],
+     "yourTurn": "Pick a primary and fallback channel for your audience."
+    },
+    {
+     "title": "Write the message",
+     "heading": "Give a reason to return.",
+     "intro": "A good message reminds users of value, not of your app.",
+     "example": {
+      "label": "News app",
+      "title": "“3 stories you missed on topics you follow”",
+      "text": "Personal and specific beats generic."
+     },
+     "steps": [
+      "The value you are reminding them of",
+      "The action you want",
+      "The tone"
+     ],
+     "yourTurn": "Draft two message variants."
+    },
+    {
+     "title": "Measure the result",
+     "heading": "Know if it worked.",
+     "intro": "Compare returning users against a holdout group to see the true lift.",
+     "example": {
+      "label": "News app",
+      "title": "10% holdout",
+      "text": "A small control group shows what would have happened anyway."
+     },
+     "steps": [
+      "The success metric",
+      "The holdout size",
+      "The review date"
+     ],
+     "yourTurn": "Set a metric and holdout for your journey."
+    }
+   ]
+  },
+  {
+   "id": "push-purposeful",
+   "topic": "push",
+   "level": "Beginner",
+   "illus": "push",
+   "title": "Write Purposeful Push Notifications",
+   "blurb": "Plan permission, message and timing.",
+   "resource": "push-worksheet",
+   "tool": "onesignal",
+   "lessons": [
+    {
+     "title": "Ask for permission well",
+     "heading": "Earn the opt-in.",
+     "intro": "Explain the value of notifications before showing the system prompt.",
+     "example": {
+      "label": "Travel app",
+      "title": "“Get gate changes instantly”",
+      "text": "A pre-prompt tied to a real benefit lifts opt-in rates."
+     },
+     "steps": [
+      "The value of notifications",
+      "The moment you ask",
+      "What happens if they say no"
+     ],
+     "yourTurn": "Write a pre-permission message."
+    },
+    {
+     "title": "Write the message",
+     "heading": "One message, one action.",
+     "intro": "Short, specific notifications get opened.",
+     "example": {
+      "label": "Travel app",
+      "title": "“Your flight boards in 30 min — Gate B12”",
+      "text": "Useful, timely and actionable."
+     },
+     "steps": [
+      "The single point",
+      "The action",
+      "The deep link destination"
+     ],
+     "yourTurn": "Draft a message in the push worksheet."
+    },
+    {
+     "title": "Choose the timing",
+     "heading": "Send at the right moment.",
+     "intro": "Timing based on behaviour beats a fixed schedule.",
+     "example": {
+      "label": "Travel app",
+      "title": "24h before departure",
+      "text": "Triggered by the trip, not the calendar."
+     },
+     "steps": [
+      "The trigger",
+      "The time zone",
+      "Frequency limits"
+     ],
+     "yourTurn": "Set a trigger and frequency cap."
+    },
+    {
+     "title": "Review performance",
+     "heading": "Learn from opens and opt-outs.",
+     "intro": "Watch opt-outs as closely as opens.",
+     "example": {
+      "label": "Travel app",
+      "title": "Opt-outs spike after promo pushes",
+      "text": "A signal to keep promos rare."
+     },
+     "steps": [
+      "Open rate",
+      "Opt-out rate",
+      "Downstream conversions"
+     ],
+     "yourTurn": "Pick the three metrics you will review weekly."
+    }
+   ]
+  },
+  {
+   "id": "campaign-brief",
+   "topic": "ads",
+   "level": "Beginner",
+   "illus": "ads",
+   "title": "Build Your First Campaign Brief",
+   "blurb": "Set a clear acquisition objective.",
+   "resource": "campaign-brief",
+   "tool": "google-ads",
+   "lessons": [
+    {
+     "title": "Set the objective",
+     "heading": "Decide what success means.",
+     "intro": "Installs, activations and revenue each lead to different campaign choices.",
+     "example": {
+      "label": "Game app",
+      "title": "Optimise for day-7 retained players",
+      "text": "A deeper goal than installs."
+     },
+     "steps": [
+      "The primary objective",
+      "The target cost",
+      "The time frame"
+     ],
+     "yourTurn": "Write the objective section of the campaign brief."
+    },
+    {
+     "title": "Define the audience",
+     "heading": "Know who you are trying to reach.",
+     "intro": "Describe your ideal user in terms platforms can target.",
+     "example": {
+      "label": "Game app",
+      "title": "Puzzle fans, 25–44, Android",
+      "text": "Specific enough to guide creative and bids."
+     },
+     "steps": [
+      "Demographics",
+      "Interests",
+      "Platforms"
+     ],
+     "yourTurn": "Describe your audience in the brief."
+    },
+    {
+     "title": "Plan the creative",
+     "heading": "Show the value fast.",
+     "intro": "The first two seconds of a video ad decide most outcomes.",
+     "example": {
+      "label": "Game app",
+      "title": "Gameplay in the first second",
+      "text": "Show, don’t tell."
+     },
+     "steps": [
+      "The hook",
+      "The value shown",
+      "The call to action"
+     ],
+     "yourTurn": "List three creative concepts."
+    },
+    {
+     "title": "Measure and iterate",
+     "heading": "Learn from every campaign.",
+     "intro": "Connect ad data to in-app events so you can see true performance.",
+     "example": {
+      "label": "Game app",
+      "title": "Cost per retained player",
+      "text": "A metric that matches the objective."
+     },
+     "steps": [
+      "The metric",
+      "The review cadence",
+      "What triggers a change"
+     ],
+     "yourTurn": "Set your review cadence."
+    }
+   ]
+  },
+  {
+   "id": "deeplink-journey",
+   "topic": "deeplinks",
+   "level": "Intermediate",
+   "illus": "deeplink",
+   "title": "Design a Deep-link Journey",
+   "blurb": "Connect a click to an app destination.",
+   "resource": "deeplink-map",
+   "tool": "branch",
+   "lessons": [
+    {
+     "title": "Deep link basics",
+     "heading": "Send users to the right screen.",
+     "intro": "A deep link opens a specific place in your app instead of the home screen.",
+     "example": {
+      "label": "Shopping app",
+      "title": "myapp://product/123",
+      "text": "Opens the exact product from an email or ad."
+     },
+     "steps": [
+      "The destination screen",
+      "The link format",
+      "The data passed along"
+     ],
+     "yourTurn": "List three destinations you want to link to."
+    },
+    {
+     "title": "Deferred deep links",
+     "heading": "Keep the context through install.",
+     "intro": "Deferred deep links remember the destination when a user installs first.",
+     "example": {
+      "label": "Shopping app",
+      "title": "Ad → Store → Install → Product",
+      "text": "The user lands on the product they clicked."
+     },
+     "steps": [
+      "Installed behaviour",
+      "Not-installed behaviour",
+      "Fallback"
+     ],
+     "yourTurn": "Map both paths in the deep link journey map."
+    },
+    {
+     "title": "Fallbacks",
+     "heading": "Plan for when things fail.",
+     "intro": "Every link needs a sensible fallback.",
+     "example": {
+      "label": "Shopping app",
+      "title": "Web product page",
+      "text": "Desktop users still see the product."
+     },
+     "steps": [
+      "Desktop fallback",
+      "Unsupported app version",
+      "Expired content"
+     ],
+     "yourTurn": "Add a fallback for each destination."
+    },
+    {
+     "title": "Test the journey",
+     "heading": "Click every link before launch.",
+     "intro": "Test on real devices, installed and not installed.",
+     "example": {
+      "label": "Shopping app",
+      "title": "Fresh install test",
+      "text": "The case most often missed."
+     },
+     "steps": [
+      "iOS installed / not installed",
+      "Android installed / not installed",
+      "Desktop"
+     ],
+     "yourTurn": "Run the five tests and record the results."
+    }
+   ]
+  },
+  {
+   "id": "utm-system",
+   "topic": "utm",
+   "level": "Beginner",
+   "illus": "utm",
+   "title": "Create a Consistent UTM System",
+   "blurb": "Use shared campaign naming rules.",
+   "homeBlurb": "Give your campaigns a shared naming language.",
+   "resource": "utm-naming",
+   "tool": "utmio",
+   "lessons": [
+    {
+     "title": "Why UTMs matter",
+     "heading": "Know where traffic comes from.",
+     "intro": "UTM parameters tag links so analytics tools can group traffic by source and campaign.",
+     "example": {
+      "label": "Newsletter",
+      "title": "utm_source=newsletter",
+      "text": "One parameter, a clear answer."
+     },
+     "steps": [
+      "utm_source",
+      "utm_medium",
+      "utm_campaign"
+     ],
+     "yourTurn": "List the channels your team uses today."
+    },
+    {
+     "title": "Naming rules",
+     "heading": "Agree on one language.",
+     "intro": "Lowercase, hyphens and a fixed vocabulary keep reports clean.",
+     "example": {
+      "label": "Paid social",
+      "title": "paid-social, not Paid_Social",
+      "text": "Consistent casing avoids split rows."
+     },
+     "steps": [
+      "Allowed values",
+      "Casing rules",
+      "Separators"
+     ],
+     "yourTurn": "Write your rules in the UTM naming template."
+    },
+    {
+     "title": "Build links",
+     "heading": "Make it easy to do the right thing.",
+     "intro": "A shared builder prevents typos.",
+     "example": {
+      "label": "Launch",
+      "title": "One sheet, one builder",
+      "text": "Everyone builds links the same way."
+     },
+     "steps": [
+      "Where links are built",
+      "Who can add values",
+      "How links are stored"
+     ],
+     "yourTurn": "Build three links using your template."
+    },
+    {
+     "title": "Govern over time",
+     "heading": "Keep the system clean.",
+     "intro": "Review new values monthly and retire old ones.",
+     "example": {
+      "label": "Team",
+      "title": "Monthly UTM review",
+      "text": "Fifteen minutes keeps reports trustworthy."
+     },
+     "steps": [
+      "Owner",
+      "Review cadence",
+      "Clean-up process"
+     ],
+     "yourTurn": "Assign an owner and a review date."
+    }
+   ]
+  }
+ ],
+ "tools": [
+  {
+   "id": "appsflyer",
+   "name": "AppsFlyer",
+   "topic": "measurement",
+   "mono": "AF",
+   "color": "#2BB673",
+   "blurb": "Measure app installs and in-app events.",
+   "what": "Attribute installs and in-app events to the campaigns and channels that drove them.",
+   "course": "plan-measurement",
+   "guide": [
+    "Plan your conversion events",
+    "Connect your media sources",
+    "Review attribution reports"
+   ],
+   "resource": "attribution-checklist",
+   "url": "https://www.appsflyer.com"
+  },
+  {
+   "id": "adjust",
+   "name": "Adjust",
+   "topic": "measurement",
+   "mono": "A",
+   "color": "#111",
+   "blurb": "Understand where app users come from.",
+   "what": "Measure where users come from and how campaigns perform across channels.",
+   "course": "plan-measurement",
+   "guide": [
+    "Set up your app",
+    "Create tracker links",
+    "Review campaign data"
+   ],
+   "resource": "attribution-checklist",
+   "url": "https://www.adjust.com"
+  },
+  {
+   "id": "firebase",
+   "name": "Google Analytics for Firebase",
+   "topic": "analytics",
+   "mono": "GA",
+   "color": "#F5A623",
+   "blurb": "Understand app usage through events.",
+   "what": "Measure app usage with events, user properties and audiences.",
+   "course": "app-funnel",
+   "guide": [
+    "Plan your events",
+    "Explore setup requirements",
+    "Review your event data"
+   ],
+   "resource": "event-tracking-plan",
+   "url": "https://firebase.google.com/products/analytics"
+  },
+  {
+   "id": "braze",
+   "name": "Braze",
+   "topic": "engagement",
+   "mono": "Bz",
+   "color": "#2D2D2D",
+   "blurb": "Build cross-channel engagement journeys.",
+   "what": "Orchestrate messages across push, email and in-app to keep users engaged.",
+   "course": "reengagement",
+   "guide": [
+    "Define your audiences",
+    "Build a canvas",
+    "Measure lift"
+   ],
+   "resource": "reengagement-planner",
+   "url": "https://www.braze.com"
+  },
+  {
+   "id": "onesignal",
+   "name": "OneSignal",
+   "topic": "push",
+   "mono": "OS",
+   "color": "#E54B4D",
+   "blurb": "Manage mobile and web push notifications.",
+   "what": "Send and automate mobile and web push notifications.",
+   "course": "push-purposeful",
+   "guide": [
+    "Add the SDK",
+    "Segment your users",
+    "Schedule a message"
+   ],
+   "resource": "push-worksheet",
+   "url": "https://onesignal.com"
+  },
+  {
+   "id": "google-ads",
+   "name": "Google Ads",
+   "topic": "ads",
+   "mono": "G",
+   "color": "#4285F4",
+   "blurb": "Explore app acquisition campaigns.",
+   "what": "Run app campaigns across Search, Play, YouTube and the Display Network.",
+   "course": "campaign-brief",
+   "guide": [
+    "Link your analytics",
+    "Create an app campaign",
+    "Review conversions"
+   ],
+   "resource": "campaign-brief",
+   "url": "https://ads.google.com"
+  },
+  {
+   "id": "branch",
+   "name": "Branch",
+   "topic": "deeplinks",
+   "mono": "Br",
+   "color": "#3D4B5C",
+   "blurb": "Route users to specific in-app content.",
+   "what": "Create deep links that route users to the right in-app content, even after install.",
+   "course": "deeplink-journey",
+   "guide": [
+    "Configure your app",
+    "Create a deep link",
+    "Test installed and new users"
+   ],
+   "resource": "deeplink-map",
+   "url": "https://www.branch.io"
+  },
+  {
+   "id": "utmio",
+   "name": "UTM.io",
+   "topic": "utm",
+   "mono": "U",
+   "color": "#F26B21",
+   "blurb": "Build consistent campaign tracking links.",
+   "what": "Build, store and govern campaign tracking links across your team.",
+   "course": "utm-system",
+   "guide": [
+    "Set naming rules",
+    "Build links",
+    "Review usage"
+   ],
+   "resource": "utm-naming",
+   "url": "https://web.utm.io"
+  }
+ ],
+ "resources": [
+  {
+   "id": "event-tracking-plan",
+   "title": "Event Tracking Plan",
+   "topic": "measurement",
+   "type": "Template",
+   "format": "XLSX",
+   "blurb": "Define the events that matter across your app journey.",
+   "illus": "sheet"
+  },
+  {
+   "id": "attribution-checklist",
+   "title": "Attribution Setup Checklist",
+   "topic": "measurement",
+   "type": "Checklist",
+   "format": "PDF",
+   "blurb": "Organize the inputs for your measurement setup.",
+   "illus": "checklist"
+  },
+  {
+   "id": "firebase-event-map",
+   "title": "Firebase Event Map",
+   "topic": "analytics",
+   "type": "Template",
+   "format": "XLSX",
+   "blurb": "Plan event names, parameters and analysis.",
+   "illus": "sheet"
+  },
+  {
+   "id": "reengagement-planner",
+   "title": "Re-engagement Journey Planner",
+   "topic": "engagement",
+   "type": "Worksheet",
+   "format": "DOCX",
+   "blurb": "Map your audience, messages and timing.",
+   "illus": "flow"
+  },
+  {
+   "id": "push-worksheet",
+   "title": "Push Message Worksheet",
+   "topic": "push",
+   "type": "Worksheet",
+   "format": "DOCX",
+   "blurb": "Draft a useful message with a clear next action.",
+   "illus": "phone"
+  },
+  {
+   "id": "campaign-brief",
+   "title": "Campaign Brief",
+   "topic": "ads",
+   "type": "Template",
+   "format": "DOCX",
+   "blurb": "Define your objective, audience and creative.",
+   "illus": "doc"
+  },
+  {
+   "id": "deeplink-map",
+   "title": "Deep Link Journey Map",
+   "topic": "deeplinks",
+   "type": "Template",
+   "format": "PDF",
+   "blurb": "Plan app destinations and fallback experiences.",
+   "illus": "phones"
+  },
+  {
+   "id": "utm-naming",
+   "title": "UTM Naming Template",
+   "topic": "utm",
+   "type": "Template",
+   "format": "XLSX",
+   "blurb": "Keep campaign tracking names consistent.",
+   "illus": "sheet"
+  },
+  {
+   "id": "measurement-guide",
+   "title": "Measurement Starter Guide",
+   "topic": "measurement",
+   "type": "Guide",
+   "format": "PDF",
+   "blurb": "A short guide to planning your first measurement setup.",
+   "illus": "doc"
+  }
+ ],
+ "posts": [
+  {
+   "id": "p1",
+   "author": "NH",
+   "name": "Sample member",
+   "hue": "#FCE3D2",
+   "ink": "#B4501E",
+   "topic": "analytics",
+   "kind": "Question",
+   "title": "Which events should we track before launch?",
+   "body": "I am mapping signup, onboarding and first purchase. How would you define activation?",
+   "replies": [
+    {
+     "author": "OA",
+     "text": "Start with the moment users first get value — for us it was the first saved item, not signup."
+    },
+    {
+     "author": "SK",
+     "text": "Keep the launch list short. 8–10 well-named events beat 50 noisy ones."
+    }
+   ]
+  },
+  {
+   "id": "p2",
+   "author": "OA",
+   "name": "Sample member",
+   "hue": "#E1E9FB",
+   "ink": "#1F3A8A",
+   "topic": "deeplinks",
+   "kind": "Question",
+   "title": "How do you test a deferred deep link?",
+   "body": "What should we check when the app is installed and when it is not?",
+   "replies": [
+    {
+     "author": "MA",
+     "text": "Delete the app, clear the browser, click the link, install from the store, then open. Repeat on both platforms."
+    }
+   ]
+  },
+  {
+   "id": "p3",
+   "author": "SK",
+   "name": "Sample member",
+   "hue": "#DDF3E6",
+   "ink": "#1E7B43",
+   "topic": "utm",
+   "kind": "Question",
+   "title": "How should we name UTMs across channels?",
+   "body": "We want consistent source, medium and campaign values across our team.",
+   "replies": []
+  },
+  {
+   "id": "p4",
+   "author": "MA",
+   "name": "Sample member",
+   "hue": "#EEE3FA",
+   "ink": "#6B3FA0",
+   "topic": "engagement",
+   "kind": "Question",
+   "title": "What belongs in a first-week retention journey?",
+   "body": "How would you sequence reminders without repeating the same message?",
+   "replies": [
+    {
+     "author": "NH",
+     "text": "Day 1 value reminder, day 3 feature tip, day 6 social proof. Each message teaches something new."
+    }
+   ]
+  },
+  {
+   "id": "p5",
+   "author": "RL",
+   "name": "Sample member",
+   "hue": "#FCE3D2",
+   "ink": "#B4501E",
+   "topic": "push",
+   "kind": "Shared learning",
+   "title": "A pre-permission screen doubled our push opt-in",
+   "body": "We explained the value before the system prompt. Opt-in went from 31% to 64%.",
+   "replies": []
+  },
+  {
+   "id": "p6",
+   "author": "JT",
+   "name": "Sample member",
+   "hue": "#E1E9FB",
+   "ink": "#1F3A8A",
+   "topic": "measurement",
+   "kind": "Shared learning",
+   "title": "Our event naming checklist",
+   "body": "snake_case, verb_object, no PII, and every event has an owner. Saved us hours of clean-up.",
+   "replies": []
+  }
+ ],
+ "defaultSaved": {
+  "course": [
+   "plan-measurement",
+   "app-funnel"
+  ],
+  "tool": [
+   "appsflyer",
+   "firebase"
+  ],
+  "resource": [
+   "event-tracking-plan",
+   "utm-naming"
+  ],
+  "lesson": [],
+  "post": []
+ }
+}
