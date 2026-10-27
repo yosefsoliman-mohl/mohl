@@ -69,6 +69,7 @@
     book: '<path d="M2 5h6a4 4 0 0 1 4 4v11a3 3 0 0 0-3-3H2z"/><path d="M22 5h-6a4 4 0 0 0-4 4v11a3 3 0 0 1 3-3h7z"/>',
     external: '<path d="M14 4h6v6M20 4l-9 9"/><path d="M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/>',
     info: '<circle cx="12" cy="12" r="9.5"/><path d="M12 11v6"/><circle cx="12" cy="7.6" r=".6" fill="currentColor"/>',
+    eyeOff: '<path d="M3 3l18 18"/><path d="M10.6 5.1A10.4 10.4 0 0 1 12 5c6.4 0 10 7 10 7a17 17 0 0 1-3.2 4.1M6.6 6.6A17.3 17.3 0 0 0 2 12s3.6 7 10 7a9.7 9.7 0 0 0 5.4-1.6"/><path d="M9.9 9.9a3 3 0 0 0 4.2 4.2"/>',
     eye: '<path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>',
     download: '<path d="M12 3v12M7 10l5 5 5-5"/><path d="M4 17v3h16v-3"/>',
     plus: '<path d="M12 5v14M5 12h14"/>',
@@ -782,7 +783,7 @@
           <form class="form" id="auth-form" data-mode="${mode}" data-next="${esc(next)}">
             ${signup ? '<label>Full name<input name="name" autocomplete="name" required maxlength="80"></label>' : ''}
             <label>Email<input name="email" type="email" autocomplete="email" required></label>
-            <label>Password<input name="password" type="password" autocomplete="${signup ? 'new-password' : 'current-password'}" required ${signup ? 'minlength="8"' : ''}></label>
+            <label>Password<span class="pw-wrap"><input name="password" type="password" autocomplete="${signup ? 'new-password' : 'current-password'}" required ${signup ? 'minlength="8"' : ''}><button type="button" class="pw-toggle" data-action="toggle-password" aria-label="Show password" aria-pressed="false">${icon('eye')}</button></span></label>
             ${signup ? '<p class="fine left">At least 8 characters.</p>' : ''}
             <p class="form-error" id="auth-error" role="alert" hidden></p>
             <button class="btn btn-primary btn-lg block" type="submit">${signup ? 'Create account' : 'Log in'}</button>
@@ -1130,6 +1131,16 @@
         location.hash = '#/home';
         location.reload();
         return;
+      case 'toggle-password': {
+        const input = t.parentElement.querySelector('input');
+        const show = input.type === 'password';
+        input.type = show ? 'text' : 'password';
+        t.innerHTML = icon(show ? 'eyeOff' : 'eye');
+        t.setAttribute('aria-label', show ? 'Hide password' : 'Show password');
+        t.setAttribute('aria-pressed', String(show));
+        input.focus();
+        return;
+      }
       case 'gen-password': {
         const chars = 'abcdefghjkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ23456789';
         const pick = crypto.getRandomValues(new Uint32Array(12));

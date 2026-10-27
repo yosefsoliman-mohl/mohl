@@ -515,3 +515,8 @@ kbd { font: 500 13px 'Inter', sans-serif; color: var(--muted); }
 .preview-banner { position: relative; z-index: 10; display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 10px; padding: 8px 16px; background: var(--navy); color: #fff; font-size: 14px; text-align: center; }
 .preview-banner strong { padding: 2px 8px; border-radius: 6px; background: var(--orange); font-size: 12px; letter-spacing: .5px; text-transform: uppercase; }
 .preview-banner .link { color: #FFD6BC; }
+.pw-wrap { position: relative; display: block; }
+.pw-wrap input { width: 100%; padding-right: 48px !important; }
+.pw-toggle { position: absolute; top: 50%; right: 6px; transform: translateY(-50%); display: grid; place-items: center; width: 36px; height: 36px; border-radius: 6px; color: var(--muted); }
+.pw-toggle:hover { background: var(--peach); color: var(--navy); }
+.pw-toggle .ic { width: 20px; height: 20px; }
