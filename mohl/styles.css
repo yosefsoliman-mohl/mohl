@@ -401,6 +401,9 @@ kbd { font: 500 13px 'Inter', sans-serif; color: var(--muted); }
   body.nav-open .scrim { display: block; position: fixed; inset: 0; z-index: 25; background: rgba(20, 24, 94, .3); }
   .icon-btn.menu-btn { display: inline-grid; }
   .topbar { padding: 10px 16px; gap: 10px; }
+  .global-search { flex: 1 1 auto; min-width: 0; }
+  .topbar-right { gap: 8px; flex: none; }
+  .topbar-right .btn { height: 38px; padding: 0 12px; font-size: 14.5px; }
   .member-pill, .user-name, kbd { display: none; }
   .user { padding-left: 0; border: 0; }
   .user-btn .avatar { width: 38px; height: 38px; font-size: 14px; }
@@ -432,6 +435,9 @@ kbd { font: 500 13px 'Inter', sans-serif; color: var(--muted); }
   .example { flex-direction: column; align-items: flex-start; }
 }
 @media (max-width: 560px) {
+  .global-search { flex: 0 0 42px; padding: 0; justify-content: center; }
+  .global-search .gs-text { display: none; }
+  .topbar-right .btn-outline .ic { display: none; }
   .grid-4 { grid-template-columns: 1fr; }
   .course-h, .course-top, .lib-card, .tp-course { grid-template-columns: 96px 1fr; gap: 12px; }
   .lib-card .thumb { height: 120px; }
@@ -506,6 +512,6 @@ kbd { font: 500 13px 'Inter', sans-serif; color: var(--muted); }
 .role-option small { color: var(--muted); font-size: 13px; }
 
 /* ---------- preview mode (no server, e.g. GitHub Pages) ---------- */
-.preview-banner { position: sticky; top: 0; z-index: 40; display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 10px; padding: 8px 16px; background: var(--navy); color: #fff; font-size: 14px; text-align: center; }
+.preview-banner { position: relative; z-index: 10; display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 10px; padding: 8px 16px; background: var(--navy); color: #fff; font-size: 14px; text-align: center; }
 .preview-banner strong { padding: 2px 8px; border-radius: 6px; background: var(--orange); font-size: 12px; letter-spacing: .5px; text-transform: uppercase; }
 .preview-banner .link { color: #FFD6BC; }
