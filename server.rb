@@ -268,7 +268,10 @@ class Api < WEBrick::HTTPServlet::AbstractServlet
     rid = parts[3]
     case "#{method} #{parts.join('/')}"
     when 'GET content'
-      DB.slice('topics', 'courses', 'tools', 'resources', 'posts', 'videos').merge('me' => public_user(current_user(req)))
+      # Guests only get topic names (for the landing page); the content itself is for members.
+      user = current_user(req)
+      keys = user ? %w[topics courses tools resources posts videos] : %w[topics]
+      %w[courses tools resources posts videos].to_h { |k| [k, []] }.merge(DB.slice(*keys)).merge('me' => public_user(user))
 
     when 'GET auth/me'
       { 'me' => public_user(current_user(req)) }

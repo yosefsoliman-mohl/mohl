@@ -26,6 +26,14 @@ their own browser. Use `ruby server.rb` for the real, shared version.
 - `seed.json` — starting content, copied into the database on first run.
 - `data/db.json` — the database (created automatically). Delete it to start over.
 
+## Landing page and members-only content
+
+New visitors land on `#/welcome`, a landing page whose form creates a normal member account.
+Everything else (Learn, Marketplace, Resources, Community, My Library) is for logged-in members:
+the app sends guests to Create account, and the server only returns topic names to guests.
+The testimonials on the landing page are sample stories — replace them with real member quotes
+(`LP_STORIES` in `mohl/app.js`) before a public launch.
+
 ## Accounts and roles
 
 **The first account you create becomes the admin.** Everyone who signs up after that is a Member.

@@ -113,7 +113,12 @@ window.MOHL_PREVIEW = (() => {
     const [, kind, id] = parts;
     const CONTENT = /^(courses|tools|resources|posts|videos)$/;
 
-    if (key === 'GET content') return { topics: db.topics, courses: db.courses, tools: db.tools, resources: db.resources, posts: db.posts, videos: db.videos, me: publicUser(me()), preview: true };
+    if (key === 'GET content') {
+      // Guests only get topic names (for the landing page), like the server.
+      const u = me();
+      if (!u) return { topics: db.topics, courses: [], tools: [], resources: [], posts: [], videos: [], me: null, preview: true };
+      return { topics: db.topics, courses: db.courses, tools: db.tools, resources: db.resources, posts: db.posts, videos: db.videos, me: publicUser(u), preview: true };
+    }
     if (key === 'GET auth/me') return { me: publicUser(me()) };
     if (key === 'POST auth/signup') {
       const u = await createUser(b, db.users.some((x) => x.role === 'admin') ? 'member' : 'admin');

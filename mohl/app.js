@@ -243,6 +243,7 @@
     $('#nav-main').innerHTML = NAV.map((n) => (n ? navItem(n) : '<hr>')).join('');
     $('#nav-bottom').innerHTML = bottom.map(navItem).join('');
     const right = $('.topbar-right');
+    document.body.classList.toggle('is-guest', !me);
     if (!me) {
       right.innerHTML = `
         <a class="btn btn-outline" href="#/login">${icon('login')} Log in</a>
@@ -808,6 +809,147 @@
   pages.login = () => (me ? (location.replace('#/home'), '') : authPage('login'));
   pages.signup = () => (me ? (location.replace('#/home'), '') : authPage('signup'));
 
+  // ---------- landing page (#/welcome) ----------
+  // Full-width page for new visitors; its form creates a normal member account.
+  const LP_BENEFITS = [
+    ['cart', 'Marketplace', 'Every tool you’ll need, in one place', 'Find the right attribution, analytics, engagement and ads tools for each stage of your growth — with a clear guide for each one.', '#/marketplace'],
+    ['cap', 'Learning', 'Learn to use the tools and get better results', 'Short, practical courses that show you how to use each tool, sharpen your skills and improve your numbers.', '#/learn'],
+    ['file', 'Resources', 'Spreadsheets, templates and our playbooks', 'Excel sheets, checklists and the strategies we use ourselves — ready to copy into your own work.', '#/resources'],
+    ['users', 'Community', 'Learn with people who do the same job', 'Ask questions, share what worked and get answers from app marketers, owners and developers.', '#/community'],
+  ];
+  // Sample stories for the preview, to be replaced with real member quotes.
+  const LP_STORIES = [
+    ['Nour Hassan', 'Growth Marketer, fintech app', 'I got promoted to Growth Lead three months after I started. The measurement course and the tracking-plan sheet gave me a setup I could finally explain to my CEO.', 'promoted', ['#FCE3D2', '#B4501E']],
+    ['Omar Khaled', 'Founder, fitness app', 'The marketplace saved me weeks. I compared attribution tools side by side and picked one in an afternoon instead of sitting through five sales demos.', 'tools', ['#E1E9FB', '#1F3A8A']],
+    ['Mariam Adel', 'CRM Specialist, e-commerce app', 'The community is the best part. I posted a question about push timing at night and had three useful answers from people running real campaigns by morning.', 'community', ['#DDF3E6', '#1E7B43']],
+    ['Youssef Samir', 'Mobile Developer', 'I’m a developer, not a marketer. The deep-link lessons finally made sense of what my team kept asking for, and now I ship it right the first time.', 'learning', ['#EEE3FA', '#6B3FA0']],
+    ['Salma Fathy', 'Performance Marketer, food delivery', 'I use the UTM naming template every single week. Our reports went from a mess to something the whole team trusts.', 'resources', ['#FCE3D2', '#B4501E']],
+    ['Karim Mostafa', 'Head of Growth, edtech startup', 'We onboard every new hire with MoHL now. They learn the tools, then the community helps them with the questions we don’t have time for.', 'team', ['#E1E9FB', '#1F3A8A']],
+  ];
+  const LP_FAQ = [
+    ['Is MoHL free?', 'Yes. Courses, the community and MoHL resources are 100% free during launch.'],
+    ['Are third-party tool subscriptions included?', 'No. Tools in the marketplace are run by their own providers, with their own plans and pricing. MoHL helps you choose and use them.'],
+    ['Do I need to connect my app?', 'No. You can start learning without connecting an app or an ad account.'],
+    ['Who is MoHL for?', 'App marketers, app owners and developers who want to grow a mobile app — from first launch to scaling.'],
+  ];
+  const lpBrand = () => `
+    <a class="lp-brand" href="#/welcome" aria-label="MoHL home">
+      <svg class="brand-mark" viewBox="0 0 48 40" aria-hidden="true"><defs><linearGradient id="bm-lp" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#E9893F"/><stop offset="1" stop-color="#A4441A"/></linearGradient></defs><path d="M4 36 C6 20 9 6 14 6 C19 6 18 24 24 24 C30 24 29 6 34 6 C39 6 42 20 44 36" fill="none" stroke="url(#bm-lp)" stroke-width="7" stroke-linecap="round"/></svg>
+      <span><strong>MoHL</strong><small>Mobile Growth, All in One</small></span>
+    </a>`;
+  const lpJoin = () => me ? `
+    <div class="card lp-join">
+      <h2>You’re in, ${esc(me.name.split(' ')[0])}!</h2>
+      <p class="muted">Pick up where you left off.</p>
+      <a class="btn btn-primary btn-lg block" href="#/home">Go to my dashboard ${icon('arrow')}</a>
+    </div>` : `
+    <div class="card lp-join" id="join">
+      <h2>Start learning for free</h2>
+      <p class="muted">One account for courses, tools, resources and the community.</p>
+      <form class="form" id="auth-form" data-mode="signup" data-next="">
+        <label>Full name<input name="name" autocomplete="name" required maxlength="80"></label>
+        <label>Email address<input name="email" type="email" autocomplete="email" required></label>
+        <label>Password<span class="pw-wrap"><input name="password" type="password" autocomplete="new-password" required minlength="8" placeholder="At least 8 characters"><button type="button" class="pw-toggle" data-action="toggle-password" aria-label="Show password" aria-pressed="false">${icon('eye')}</button></span></label>
+        <p class="form-error" id="auth-error" role="alert" hidden></p>
+        <button class="btn btn-primary btn-lg block" type="submit">Create my free account</button>
+      </form>
+      <p class="fine">No credit card required. Already a member? <a class="link" href="#/login">Log in</a></p>
+    </div>`;
+  pages.welcome = () => {
+    const cta = me ? '#/home' : '#join';
+    return `
+    <div class="lp">
+      <div class="lp-offer">${icon('megaphone', 'sm')} Launch offer: MoHL courses, community &amp; resources are 100% free</div>
+      <header class="lp-nav">
+        ${lpBrand()}
+        <nav class="lp-links"><a href="#/learn">Learn</a><a href="#/marketplace">Marketplace</a><a href="#/resources">Resources</a><a href="#/community">Community</a></nav>
+        <div class="lp-actions">
+          ${me ? `<a class="btn btn-primary" href="#/home">Open MoHL</a>` : `<a class="lp-login" href="#/login">Log in</a><a class="btn btn-primary" href="#join" data-lp-join>Join for free</a>`}
+        </div>
+      </header>
+
+      <section class="lp-hero">
+        <div class="lp-wrap lp-hero-grid">
+          <div class="lp-hero-copy">
+            <div class="eyebrow">Learn. Discover. Connect.</div>
+            <h1>Your place to learn mobile app growth.</h1>
+            <p class="lp-lead">The tools you need, the skills to use them, ready-made resources and a community of app marketers, owners and developers — all free, all in one place.</p>
+            <div class="lp-hero-btns">
+              <a class="btn btn-primary btn-lg" href="${cta}" data-lp-join>Join MoHL for free ${icon('arrow')}</a>
+              <a class="btn btn-outline btn-lg" href="#/learn">Explore learning paths</a>
+            </div>
+            <ul class="lp-checks">${['Free courses', 'Free community', 'Free resources'].map((t) => `<li>${icon('check')} ${t}</li>`).join('')}</ul>
+          </div>
+          ${lpJoin()}
+        </div>
+      </section>
+
+      <section class="lp-section">
+        <div class="lp-wrap">
+          <div class="lp-head"><h2>Everything you need to grow your app</h2><p>Four things that work together, so you always know what to use, how to use it and who to ask.</p></div>
+          <div class="lp-benefits">${LP_BENEFITS.map(([ic, kicker, title, text, href]) => `
+            <a class="card lp-benefit" href="${href}">
+              <span class="lp-icon">${icon(ic)}</span>
+              <div class="kicker">${kicker}</div>
+              <h3>${title}</h3>
+              <p>${text}</p>
+              <span class="link">Explore ${kicker.toLowerCase()} ${icon('arrow', 'sm')}</span>
+            </a>`).join('')}</div>
+        </div>
+      </section>
+
+      <section class="lp-section lp-tint">
+        <div class="lp-wrap">
+          <div class="lp-head"><h2>Explore ${topics.length} learning paths</h2><p>Choose a topic. Find a course, a tool and a practical resource.</p></div>
+          <div class="lp-paths">${topics.map((t) => `
+            <a class="card lp-path" href="#/learn?topic=${t.id}"><span class="lp-icon">${icon(t.icon)}</span><span>${esc(t.name)}</span>${icon('chevRight')}</a>`).join('')}</div>
+        </div>
+      </section>
+
+      <section class="lp-section">
+        <div class="lp-wrap">
+          <div class="lp-head"><h2>Join. Learn. Put it into practice.</h2><p>Get from curious to confident with a clear path.</p></div>
+          <ol class="lp-steps">${[
+            ['Create your free account', 'Takes a minute. No credit card required.'],
+            ['Choose your learning path', 'Pick a topic and learn the tools behind it.'],
+            ['Apply it and share results', 'Use the templates, then share what worked with the community.'],
+          ].map(([h, p], i) => `<li class="card"><span class="lp-num">0${i + 1}</span><div><h3>${h}</h3><p>${p}</p></div></li>`).join('')}</ol>
+        </div>
+      </section>
+
+      <section class="lp-section lp-tint">
+        <div class="lp-wrap">
+          <div class="lp-head"><h2>What members say</h2><p>How people use MoHL to learn faster and grow their apps.</p></div>
+          <div class="lp-stories">${LP_STORIES.map(([name, role, quote, , [bg, ink]]) => `
+            <figure class="card lp-story">
+              <div class="lp-stars" aria-label="5 out of 5">★★★★★</div>
+              <blockquote>“${quote}”</blockquote>
+              <figcaption><span class="avatar" style="background:${bg};color:${ink}">${initials(name)}</span><span><strong>${name}</strong><small>${role}</small></span></figcaption>
+            </figure>`).join('')}</div>
+          <p class="lp-note">Sample stories shown in this preview.</p>
+        </div>
+      </section>
+
+      <section class="lp-section">
+        <div class="lp-wrap lp-narrow">
+          <div class="lp-head"><h2>Frequently asked questions</h2></div>
+          <div class="lp-faq">${LP_FAQ.map(([q, a]) => `<details class="card"><summary>${q}${icon('chevDown')}</summary><p>${a}</p></details>`).join('')}</div>
+        </div>
+      </section>
+
+      <section class="lp-band">
+        <div class="lp-wrap lp-band-inner">
+          <div><h2>Take your first step in mobile growth.</h2><p>Free courses. Useful tools and resources. A supportive community.</p></div>
+          <a class="btn btn-primary btn-lg" href="${cta}" data-lp-join>${me ? 'Open MoHL' : 'Join MoHL for free'} ${icon('arrow')}</a>
+        </div>
+      </section>
+
+      <footer class="lp-foot">
+        <div class="lp-wrap lp-foot-inner">${lpBrand()}<span>Learn mobile growth. Find your tools. Meet your community.</span><nav><a href="#/help">Help</a><a href="#/learn">Learn</a><a href="#/community">Community</a></nav></div>
+      </footer>
+    </div>`;
+  };
+
   // ---------- admin ----------
   const ILLUS_OPTS = Object.keys(ILL).map((k) => [k, k]);
   const topicOpts = () => topics.map((t) => [t.id, t.name]);
@@ -1001,14 +1143,21 @@
 
   // ---------- router ----------
   let current = null;
+  const PUBLIC_PAGES = ['welcome', 'login', 'signup'];
   function route() {
     const [path, query = ''] = location.hash.replace(/^#\/?/, '').split('?');
     const [name = 'home', ...rest] = path.split('/').filter(Boolean);
     const params = new URLSearchParams(query);
     let view = name, args = rest;
     if (name === 'learn' && rest.length) view = 'lesson';
-    if (!pages[view]) view = 'home';
+    if (!pages[view]) view = me ? 'home' : 'welcome';
+    // Everything except the landing and auth pages is for members only.
+    if (!me && !PUBLIC_PAGES.includes(view)) {
+      location.replace(`#/signup?next=${encodeURIComponent(`/${path}${query ? `?${query}` : ''}`)}`);
+      return;
+    }
     current = view;
+    document.body.classList.toggle('is-landing', view === 'welcome');
     const page = $('#page');
     page.innerHTML = pages[view](params, args);
     refreshList();
@@ -1061,6 +1210,12 @@
     if (!e.target.closest('#user')) closeUserMenu();
     if (!t) return;
     const d = t.dataset;
+    if (d.lpJoin !== undefined && t.getAttribute('href') === '#join') {
+      e.preventDefault();
+      $('#join')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      $('#join input')?.focus({ preventScroll: true });
+      return;
+    }
 
     for (const key of Object.keys(CHIP_GROUPS)) {
       const attr = key.replace(/-([a-z])/g, (_, c) => c.toUpperCase());
@@ -1177,11 +1332,12 @@
         toast('Saved items and progress cleared');
         return route();
       case 'signout':
-        api('auth/logout', { method: 'POST' }).finally(() => {
+        api('auth/logout', { method: 'POST' }).finally(async () => {
           me = null;
+          await loadContent().catch(() => {});
           loadState();
           renderChrome();
-          location.hash = '#/home';
+          location.hash = '#/welcome';
           route();
           toast('Logged out');
         });
@@ -1215,6 +1371,7 @@
         const body = { email: f.email.value, password: f.password.value };
         if (f.dataset.mode === 'signup') body.name = f.name.value;
         ({ me } = await api(`auth/${f.dataset.mode}`, { method: 'POST', body }));
+        await loadContent(); // the server only sends courses, tools and the rest to members
         loadState();
         renderChrome();
         toast(f.dataset.mode === 'signup' ? `Welcome to MoHL, ${me.name.split(' ')[0]}!` : `Welcome back, ${me.name.split(' ')[0]}`);
@@ -1296,13 +1453,14 @@
   }
 
   window.addEventListener('hashchange', () => { closeModal(); route(); });
-  if (!location.hash) history.replaceState(null, '', '#/home');
   try {
     await loadContent();
   } catch {
     $('#page').innerHTML = empty('Could not reach the MoHL server. Start it with “ruby server.rb” and reload.');
     return;
   }
+  // New visitors land on the landing page; members go straight to their dashboard.
+  if (!location.hash) history.replaceState(null, '', me ? '#/home' : '#/welcome');
   loadState();
   previewBanner();
   renderChrome();
