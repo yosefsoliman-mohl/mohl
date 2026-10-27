@@ -3,12 +3,26 @@
   let topics = [], courses = [], tools = [], resources = [], posts = [], me = null;
   const defaultSaved = { course: ['plan-measurement', 'app-funnel'], tool: ['appsflyer', 'firebase'], resource: ['event-tracking-plan', 'utm-naming'], lesson: [], post: [] };
 
-  async function api(path, { method = 'GET', body } = {}) {
+  // With no server behind the page (e.g. GitHub Pages), everything runs in preview mode.
+  let preview = false;
+  async function api(path, opts = {}) {
+    if (preview) return window.MOHL_PREVIEW.request(path, opts);
+    try {
+      return await serverApi(path, opts);
+    } catch (err) {
+      if (err.status || path !== 'content') throw err;
+      preview = true;
+      return window.MOHL_PREVIEW.request(path, opts);
+    }
+  }
+  async function serverApi(path, { method = 'GET', body } = {}) {
     const res = await fetch(`/api/${path}`, {
       method, credentials: 'same-origin',
       headers: method === 'GET' ? {} : { 'Content-Type': 'application/json' },
       body: method === 'GET' ? undefined : JSON.stringify(body || {}),
     });
+    // A static host answers /api/... with an HTML 404 page: that means there is no server.
+    if (!(res.headers.get('content-type') || '').includes('application/json')) throw new Error('No MoHL server');
     const data = await res.json().catch(() => ({}));
     if (!res.ok) throw Object.assign(new Error(data.error || 'Something went wrong'), { status: res.status });
     return data;
@@ -16,6 +30,14 @@
   async function loadContent() {
     const d = await api('content');
     ({ topics, courses, tools, resources, posts, me } = d);
+  }
+  function previewBanner() {
+    if (!preview || $('#preview-banner')) return;
+    document.body.insertAdjacentHTML('afterbegin', `
+      <div class="preview-banner" id="preview-banner" role="note">
+        <strong>Preview</strong> Anything you add here is saved only in your browser.
+        <button class="link" data-action="preview-reset">Reset preview</button>
+      </div>`);
   }
 
   // ---------- helpers ----------
@@ -1101,6 +1123,13 @@
 
     switch (d.action) {
       case 'add-member': return memberForm();
+      case 'preview-reset':
+        if (!confirm('Reset the preview? Accounts and changes you made in this browser will be cleared.')) return;
+        window.MOHL_PREVIEW.reset();
+        try { Object.keys(localStorage).filter((k) => k.startsWith('mohl-state')).forEach((k) => localStorage.removeItem(k)); } catch {}
+        location.hash = '#/home';
+        location.reload();
+        return;
       case 'gen-password': {
         const chars = 'abcdefghjkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ23456789';
         const pick = crypto.getRandomValues(new Uint32Array(12));
@@ -1242,6 +1271,7 @@
     return;
   }
   loadState();
+  previewBanner();
   renderChrome();
   route();
 })();

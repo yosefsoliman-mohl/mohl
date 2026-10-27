@@ -10,6 +10,15 @@ ruby server.rb
 
 Then open http://localhost:5173. No installs needed — it uses the Ruby that ships with macOS.
 
+## Online preview
+
+Every push to `main` publishes the site to GitHub Pages
+(`.github/workflows/pages.yml`): **https://yosefsoliman-mohl.github.io/mohl/**
+
+Pages has no server, so the site runs in **preview mode** (`mohl/preview-backend.js`):
+same content, sign-up, roles and admin, but everything a visitor does is saved only in
+their own browser. Use `ruby server.rb` for the real, shared version.
+
 ## How it works
 
 - `mohl/` — the web app (HTML, CSS, JavaScript).
