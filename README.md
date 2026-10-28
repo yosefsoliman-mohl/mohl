@@ -16,7 +16,7 @@ Every push to `main` publishes the site to GitHub Pages
 (`.github/workflows/pages.yml`): **https://yosefsoliman-mohl.github.io/mohl/**
 
 Pages has no server, so the site runs in **preview mode** (`mohl/preview-backend.js`):
-same content, sign-up, roles and admin, but everything a visitor does is saved only in
+same content and sign-up (every visitor is a Member), but everything a visitor does is saved only in
 their own browser. Use `ruby server.rb` for the real, shared version.
 
 ## How it works
@@ -37,6 +37,7 @@ The testimonials on the landing page are sample stories — replace them with re
 ## Accounts and roles
 
 **The first account you create becomes the admin.** Everyone who signs up after that is a Member.
+On the GitHub Pages preview every sign-up is a Member — visitors there can't add or edit content.
 In **Admin → Members** admins can **Add member** (name, email, password and role), change anyone's
 role from the dropdown, or remove a member.
 

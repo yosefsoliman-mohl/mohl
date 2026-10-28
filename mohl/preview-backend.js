@@ -39,6 +39,8 @@ window.MOHL_PREVIEW = (() => {
     }
     // Preview data saved before the videos section existed starts with the seed videos.
     if (!db.videos) { db.videos = (await (await fetch('seed.json')).json()).videos || []; save(); }
+    // Earlier previews made the first sign-up an admin; nobody manages content in the preview now.
+    if (db.users.some((u) => u.role !== 'member')) { db.users.forEach((u) => { u.role = 'member'; }); save(); }
   }
 
   const me = () => db.users.find((u) => u.id === read(SESSION_KEY));
@@ -121,7 +123,8 @@ window.MOHL_PREVIEW = (() => {
     }
     if (key === 'GET auth/me') return { me: publicUser(me()) };
     if (key === 'POST auth/signup') {
-      const u = await createUser(b, db.users.some((x) => x.role === 'admin') ? 'member' : 'admin');
+      // Visitors to the public preview are always plain members: they can't add or edit content.
+      const u = await createUser(b, 'member');
       store(SESSION_KEY, u.id);
       return { me: publicUser(u) };
     }
